@@ -13,3 +13,7 @@ class Newspaper(object):
         self.frequency: int = frequency  # the issue frequency (in days)
         self.price: float = price  # the monthly price
         self.issues: List[Issue] = []
+    def get_issues(self):
+        return self.issues
+    def add_issue(self, issue: Issue):
+        self.issues.append(issue)

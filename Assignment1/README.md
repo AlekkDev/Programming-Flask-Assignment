@@ -63,35 +63,35 @@ Ensure the correct functionality through appropriate test cases!
 
 A few examples are provided in the [`src`](./src) and [`test`](./test) folders to get you started.
 
-| Endpoint                                         | HTTP Method | Description                                                                                                                                             |
-|--------------------------------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/newspaper`                                     | `GET`       | List all newspapers in the agency.                                                                                                                      |
-| `/newspaper`                                     | `POST`      | Create a new newspaper.                                                                                                                                 |
-| `/newspaper/<paper_id>`                          | `GET`       | Get a newspaper's information.                                                                                                                          |
-| `/newspaper/<paper_id>`                          | `POST`      | Update a new newspaper.                                                                                                                                 |
-| `/newspaper/<paper_id>`                          | `DELETE`    | Delete a newspaper, and all its issues.                                                                                                                 |
-| `/newspaper/<paper_id>/issue`                    | `GET`       | List all issues of a specific newspaper.                                                                                                                |
-| `/newspaper/<paper_id>/issue`                    | `POST`      | Create a new issue.                                                                                                                                     |
-| `/newspaper/<paper_id>/issue/<issue_id>`         | `GET`       | Get information of a newspaper issue                                                                                                                    |
-| `/newspaper/<paper_id>/issue/<issue_id>/release` | `POST`      | Release an issue                                                                                                                                        |
-| `/newspaper/<paper_id>/issue/<issue_id>/editor`  | `POST`      | Specify an editor for an issue. (Transmit the editor ID as parameter)                                                                                   |
-| `/newspaper/<paper_id>/issue/<issue_id>/release` | `POST`      | Release an issue                                                                                                                                        |
-| `/newspaper/<paper_id>/issue/<issue_id>/deliver` | `POST`      | "Send" an issue to a subscriber. This means there should be a record of the subscriber receiving                                                        |
-| `/newspaper/<paper_id>/stats`                    | `GET`       | Return information about the specific newspaper (number of subscribers, monthly and annual revenue)                                                     |
-| `/editor`                                        | `GET`       | List all editors of the agency.                                                                                                                         |
-| `/editor`                                        | `POST`      | Create a new editor.                                                                                                                                    |
-| `/editor/<editor_id>`                            | `GET`       | Get an editor's information.                                                                                                                            |
-| `/editor/<editor_id>`                            | `POST`      | Update an editor's information.                                                                                                                         |
-| `/editor/<editor_id>`                            | `DELETE`    | Delete an editor.                                                                                                                                       |
-| `/editor/<editor_id>/issues`                     | `GET`       | Return a list of newspaper issues that the editor was responsible for.                                                                                  |
-| `/subscriber`                                    | `GET`       | List all subscribers in the agency.                                                                                                                     |
-| `/subscriber`                                    | `POST`      | Create a new subscriber.                                                                                                                                |
-| `/subscriber/<subscriber_id>`                    | `GET`       | Get a subscriber's information.                                                                                                                         |
-| `/subscriber/<subscriber_id>`                    | `POST`      | Update a subscriber's information.                                                                                                                      |
-| `/subscriber/<subscriber_id>`                    | `DELETE`    | Delete a subscriber.                                                                                                                                    |
-| `/subscriber/<subscriber_id>/subscribe`          | `POST`      | Subscribe a subscriber to a newspaper. (Transmit the newspaper ID as parameter.)                                                                        |
-| `/subscriber/<subscriber_id>/stats`              | `GET`       | Get the number of newspaper subscriptions and the monthly and annual cost, as well as the number of issues that the subscriber received for each paper. |
-| `/subscriber/<subscriber_id>/missingissues`      | `GET`       | Check if there are any undelivered issues of the subscribed newspapers.                                                                                 |
+| Done  | Endpoint                     | HTTP Method | Description                                                                                                                                             |
+|-------|------------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **X** | `/newspaper`                 | `GET`       | List all newspapers in the agency.                                                                                                                      |
+| **X** | `/newspaper`                 | `POST`      | Create a new newspaper.                                                                                                                                 |
+| **X** | `/newspaper/`                | `GET`       | Get a newspaper's information.                                                                                                                          |
+| **X** | `/newspaper/`                | `POST`      | Update a new newspaper.                                                                                                                                 |
+| **X** | `/newspaper/`                | `DELETE`    | Delete a newspaper, and all its issues.                                                                                                                 |
+|       | `/newspaper//issue`          | `GET`       | List all issues of a specific newspaper.                                                                                                                |
+|       | `/newspaper//issue`          | `POST`      | Create a new issue.                                                                                                                                     |
+|       | `/newspaper//issue/`         | `GET`       | Get information of a newspaper issue                                                                                                                    |
+|       | `/newspaper//issue//release` | `POST`      | Release an issue                                                                                                                                        |
+|       | `/newspaper//issue//editor`  | `POST`      | Specify an editor for an issue. (Transmit the editor ID as parameter)                                                                                   |
+|       | `/newspaper//issue//release` | `POST`      | Release an issue                                                                                                                                        |
+|       | `/newspaper//issue//deliver` | `POST`      | "Send" an issue to a subscriber. This means there should be a record of the subscriber receiving                                                        |
+|       | `/newspaper//stats`          | `GET`       | Return information about the specific newspaper (number of subscribers, monthly and annual revenue)                                                     |
+|       | `/editor`                    | `GET`       | List all editors of the agency.                                                                                                                         |
+|       | `/editor`                    | `POST`      | Create a new editor.                                                                                                                                    |
+|       | `/editor/`                   | `GET`       | Get an editor's information.                                                                                                                            |
+|       | `/editor/`                   | `POST`      | Update an editor's information.                                                                                                                         |
+|       | `/editor/`                   | `DELETE`    | Delete an editor.                                                                                                                                       |
+|       | `/editor//issues`            | `GET`       | Return a list of newspaper issues that the editor was responsible for.                                                                                  |
+|       | `/subscriber`                | `GET`       | List all subscribers in the agency.                                                                                                                     |
+|       | `/subscriber`                | `POST`      | Create a new subscriber.                                                                                                                                |
+|       | `/subscriber/`               | `GET`       | Get a subscriber's information.                                                                                                                         |
+|       | `/subscriber/`               | `POST`      | Update a subscriber's information.                                                                                                                      |
+|       | `/subscriber/`               | `DELETE`    | Delete a subscriber.                                                                                                                                    |
+|       | `/subscriber//subscribe`     | `POST`      | Subscribe a subscriber to a newspaper. (Transmit the newspaper ID as parameter.)                                                                        |
+|       | `/subscriber//stats`         | `GET`       | Get the number of newspaper subscriptions and the monthly and annual cost, as well as the number of issues that the subscriber received for each paper. |
+|       | `/subscriber//missingissues` | `GET`       | Check if there are any undelivered issues of the subscribed newspapers.                                                                                 |
 
 
 ### Submission

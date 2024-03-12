@@ -3,6 +3,7 @@ from flask_restx import Namespace, reqparse, Resource, fields
 
 from ..model.agency import Agency
 from ..model.newspaper import Newspaper
+import random
 
 newspaper_ns = Namespace("newspaper", description="Newspaper related operations")
 
@@ -17,7 +18,15 @@ paper_model = newspaper_ns.model('NewspaperModel', {
             help='The monthly price of the newspaper (e.g. 12.3)')
    })
 
+def generate_product_id():
+    # Define the range for the product ID (adjust min and max values as needed)
+    min_id = 1000
+    max_id = 9999
 
+    # Generate a random integer within the specified range
+    product_id = random.randint(min_id, max_id)
+
+    return product_id
 @newspaper_ns.route('/')
 class NewspaperAPI(Resource):
 
@@ -25,8 +34,8 @@ class NewspaperAPI(Resource):
     @newspaper_ns.expect(paper_model, validate=True)
     @newspaper_ns.marshal_with(paper_model, envelope='newspaper')
     def post(self):
-        # TODO: this is not smart! you should find a better way to generate a unique ID!
-        paper_id = len(Agency.get_instance().newspapers) + 20
+        # TODO_DONE: use uuid to generate a unique ID
+        paper_id = generate_product_id()
 
         # create a new paper object and add it
         new_paper = Newspaper(paper_id=paper_id,
@@ -42,7 +51,6 @@ class NewspaperAPI(Resource):
     def get(self):
         return Agency.get_instance().all_newspapers()
 
-
 @newspaper_ns.route('/<int:paper_id>')
 class NewspaperID(Resource):
 
@@ -56,8 +64,14 @@ class NewspaperID(Resource):
     @newspaper_ns.expect(paper_model, validate=True)
     @newspaper_ns.marshal_with(paper_model, envelope='newspaper')
     def post(self, paper_id):
-        # TODO: update newspaper
-        pass
+        paperToUpdate = Agency.get_instance().get_newspaper(paper_id)
+        if not paperToUpdate:
+            return jsonify(f"Newspaper with ID {paper_id} was not found")
+        else:
+            paperToUpdate.name = newspaper_ns.payload['name']
+            paperToUpdate.frequency = newspaper_ns.payload['frequency']
+            paperToUpdate.price = newspaper_ns.payload['price']
+            Agency.update_newspaper(paperToUpdate)
 
     @newspaper_ns.doc(description="Delete a new newspaper")
     def delete(self, paper_id):
@@ -66,3 +80,16 @@ class NewspaperID(Resource):
             return jsonify(f"Newspaper with ID {paper_id} was not found")
         Agency.get_instance().remove_newspaper(targeted_paper)
         return jsonify(f"Newspaper with ID {paper_id} was removed")
+@newspaper_ns.route('//issue')
+class NewspaperAPI(Resource):
+    @newspaper_ns.doc(paper_model, description="Get all issues of a newspaper")
+
+    def get(self, paper_id):
+        paper = Agency.get_instance().get_newspaper(paper_id)
+        return paper.get_issues()
+
+    @newspaper_ns.doc(paper_model, description="Create an issue of a newspaper")
+    def post(self, paper_id):
+        paper = Agency.get_instance().get_newspaper(paper_id)
+        paper.add_issue(newspaper_ns.payload)
+        return paper.get_issues()
