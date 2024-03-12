@@ -2,12 +2,14 @@ from typing import List, Union, Optional
 
 from .newspaper import Newspaper
 from .issue import Issue
+from .editor import Editor
 
 class Agency(object):
     singleton_instance = None
 
     def __init__(self):
         self.newspapers: List[Newspaper] = []
+        self.editors: List[Editor] = []
 
     @staticmethod
     def get_instance():
@@ -47,3 +49,12 @@ class Agency(object):
             return self.issues
         def add_issue(self, issue: Issue):
             self.issues.append(issue)
+    def add_editor(self, editor):
+        self.editors.append(editor)
+    def get_all_editors(self):
+        return self.editors
+    def get_editor_by_id(self,editor_id):
+        for editor in self.editors:
+            if editor.editor_id == editor_id:
+                return editor
+        return None

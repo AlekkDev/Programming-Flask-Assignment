@@ -13,9 +13,21 @@ paper_model = newspaper_ns.model('NewspaperModel', {
     'name': fields.String(required=True,
             help='The name of the newspaper, e.g. The New York Times'),
     'frequency': fields.Integer(required=True,
-            help='The publication frequency of the newspaper in days (e.g. 1 for daily papers and 7 for weekly magazines'),
+            help='The publication frequency of the newspaper in days (ex. 1 for daily papers and 7 for weekly magazines'),
     'price': fields.Float(required=True,
             help='The monthly price of the newspaper (e.g. 12.3)')
+   })
+issue_model = newspaper_ns.model('IssueModel', {
+    'issue_id': fields.Integer(required=False,
+            help='The unique identifier of an issue'),
+    'publication_date': fields.String(required=True,
+            help='The date of the issue, e.g. 2021-01-01'),
+    'title': fields.String(required=True,
+            help='The title of the issue, e.g. "The world is ending"'),
+    'editor_id': fields.Integer(required=False,
+                               help='The unique identifier of the editor of the issue'),
+    'delivered': fields.Boolean(required=False,
+                                help='A boolean indicating if the issue was delivered or not')
    })
 
 def generate_product_id():
@@ -80,16 +92,20 @@ class NewspaperID(Resource):
             return jsonify(f"Newspaper with ID {paper_id} was not found")
         Agency.get_instance().remove_newspaper(targeted_paper)
         return jsonify(f"Newspaper with ID {paper_id} was removed")
-@newspaper_ns.route('//issue')
+@newspaper_ns.route('/<int:paper_id>/issues')
 class NewspaperAPI(Resource):
-    @newspaper_ns.doc(paper_model, description="Get all issues of a newspaper")
 
+    @newspaper_ns.doc(paper_model, description="Get all issues of a newspaper")
+    @newspaper_ns.marshal_list_with(issue_model, envelope='issues')
     def get(self, paper_id):
         paper = Agency.get_instance().get_newspaper(paper_id)
         return paper.get_issues()
 
     @newspaper_ns.doc(paper_model, description="Create an issue of a newspaper")
+    @newspaper_ns.expect(issue_model, validate=True)
+    @newspaper_ns.marshal_with(issue_model, envelope='issue')
     def post(self, paper_id):
         paper = Agency.get_instance().get_newspaper(paper_id)
         paper.add_issue(newspaper_ns.payload)
         return paper.get_issues()
+
