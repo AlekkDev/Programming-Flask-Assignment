@@ -3,6 +3,7 @@ from typing import List, Union, Optional
 from .newspaper import Newspaper
 from .issue import Issue
 from .editor import Editor
+from .subscriber import Subscriber
 
 class Agency(object):
     singleton_instance = None
@@ -10,6 +11,7 @@ class Agency(object):
     def __init__(self):
         self.newspapers: List[Newspaper] = []
         self.editors: List[Editor] = []
+        self.subscribers: List[Subscriber] = []
 
     @staticmethod
     def get_instance():
@@ -57,4 +59,29 @@ class Agency(object):
         for editor in self.editors:
             if editor.editor_id == editor_id:
                 return editor
+        return None
+    def delete_editor(self, editor):
+        self.editors.remove(editor)
+    def update_editor(self, editor):
+        editing_editor = self.get_editor_by_id(editor.editor_id)
+        if editing_editor is not None:
+            editing_editor.name = editor.name
+            editing_editor.address = editor.address
+        else:
+            raise ValueError(f"An editor with ID {editor.editor_id} does not exist")
+    def get_newspapers_of_editor(self, editor_id):
+        editor = self.get_editor_by_id(editor_id)
+        return editor.get_newspapers()
+
+    def add_subscriber(self, subscriber):
+        self.subscribers.append(subscriber)
+    def get_all_subscribers(self):
+        subscribers = []
+        for subscriber in self.subscribers:
+            subscribers.append(subscriber.get_info())
+        return subscribers
+    def get_subscriber_by_id(self,subscriber_id):
+        for subscriber in self.subscribers:
+            if subscriber.subscriber_id == subscriber_id:
+                return subscriber
         return None

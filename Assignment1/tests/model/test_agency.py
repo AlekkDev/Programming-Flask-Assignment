@@ -3,6 +3,7 @@ import pytest
 from ...src.model.newspaper import Newspaper
 from ...src.model.issue import Issue
 from ...src.model.editor import Editor
+from ...src.model.subscriber import Subscriber
 from ..fixtures import app, client, agency
 
 
@@ -76,7 +77,7 @@ def test_get_info_of_issue(agency):
     new_paper.add_issue(new_issue)
     assert new_paper.get_issue_by_id(123).title == "Stiegl is definitely not overrated" and new_paper.get_issue_by_id(123).publication_date == "2023-09-01"
 
-def test_create_editor(agency):
+def test_create_and_delete_editor(agency):
     new_paper = Newspaper(paper_id=464,
                           name="Simpsons Comic",
                           frequency=7,
@@ -87,7 +88,17 @@ def test_create_editor(agency):
     new_issue = Issue(issue_id=123,publicationDate="2023-09-01", title="Stiegl is definitely not overrated" )
     new_issue.add_editor(new_editor)
     assert agency.get_editor_by_id(new_editor.editor_id) == new_editor
-
+    agency.delete_editor(new_editor)
+    assert agency.get_editor_by_id(new_editor.editor_id) == None
+def test_get_editor_info(agency):
+    new_paper = Newspaper(paper_id=465,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_editor = Editor(editor_id=1, name="Homer Simpson",address="First Street",list_of_newspapers=[])
+    agency.add_newspaper(new_paper)
+    agency.add_editor(new_editor)
+    assert new_editor.get_info() == (1,"Homer Simpson","First Street",[])
 def test_add_editor_to_issue(agency):
     new_paper = Newspaper(paper_id=435,
                           name="Simpsons Comic",
@@ -99,3 +110,34 @@ def test_add_editor_to_issue(agency):
     new_paper.add_issue(new_issue)
     new_issue.add_editor(new_editor.editor_id)
     assert new_issue.editor_id == new_editor.editor_id
+def test_update_editor(agency):
+    new_paper = Newspaper(paper_id=467,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_editor = Editor(editor_id=2, name="Homer Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_editor(new_editor)
+    agency.get_editor_by_id(2).update_info(name = "Bart Simpson", address = "Second Street")
+    assert agency.get_editor_by_id(2).get_info() == (2,"Bart Simpson","Second Street",[])
+def test_get_editor_newspapers(agency):
+    new_paper = Newspaper(paper_id=468,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_editor = Editor(editor_id=2, name="Homer Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_editor(new_editor)
+    new_editor.add_newspaper(new_paper)
+    assert new_editor.get_newspapers() == [new_paper]
+
+def test_get_all_subscribers(agency):
+    new_paper = Newspaper(paper_id=469,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=1, name="Bart Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    assert len(agency.get_all_subscribers()) == 1
+

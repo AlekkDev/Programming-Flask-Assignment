@@ -4,4 +4,13 @@ class Editor(object):
         self.name = name
         self.address = address
         self.list_of_newspapers = list_of_newspapers
+    def get_info(self):
+        return self.editor_id, self.name, self.address, self.list_of_newspapers
+    def add_newspaper(self, newspaper):
+        self.list_of_newspapers.append(newspaper)
+    def update_info(self, name, address):
+        self.name = name
+        self.address = address
+    def get_newspapers(self):
+        return self.list_of_newspapers
 
