@@ -131,6 +131,15 @@ def test_get_editor_newspapers(agency):
     new_editor.add_newspaper(new_paper)
     assert new_editor.get_newspapers() == [new_paper]
 
+def test_create_subscriber(agency):
+    new_paper = Newspaper(paper_id=471,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=1, name="Bart Simpson", address="FIfth Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    assert agency.get_subscriber_by_id(1) == new_subscriber
 def test_get_all_subscribers(agency):
     new_paper = Newspaper(paper_id=469,
                           name="Simpsons Comic",
@@ -139,5 +148,45 @@ def test_get_all_subscribers(agency):
     new_subscriber = Subscriber(subscriber_id=1, name="Bart Simpson", address="First Street")
     agency.add_newspaper(new_paper)
     agency.add_subscriber(new_subscriber)
-    assert len(agency.get_all_subscribers()) == 1
+    assert len(agency.get_all_subscribers()) == 2
+def test_get_subscriber_info(agency):
+    new_paper = Newspaper(paper_id=470,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=1, name="Bart Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    assert new_subscriber.get_info() == (1,"Bart Simpson","First Street",[])
 
+def test_update_subscriber_info_and_delete(agency):
+    new_paper = Newspaper(paper_id=472,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    old_subscriber = Subscriber(subscriber_id=1, name="Bart Simpson", address="First Street")
+    new_subscriber = Subscriber(subscriber_id=1, name="Bartina Simpson", address="8th Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(old_subscriber)
+    agency.update_subscriber_info(new_subscriber)
+    assert agency.get_subscriber_by_id(1).get_info() == (1,"Bartina Simpson","8th Street",[])
+def test_delete_subscriber(agency):
+    new_paper = Newspaper(paper_id=473,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=5, name="Bart Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    agency.delete_subscriber(new_subscriber)
+    assert agency.get_subscriber_by_id(5) == None
+def test_subscriber_subscribe_to_newspaper(agency):
+    new_paper = Newspaper(paper_id=474,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=7, name="Bart Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    new_subscriber.subscribe_to(new_paper.paper_id)
+    assert new_subscriber.list_of_newspapers == [new_paper.paper_id]

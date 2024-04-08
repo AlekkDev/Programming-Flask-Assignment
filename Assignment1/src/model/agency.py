@@ -85,3 +85,12 @@ class Agency(object):
             if subscriber.subscriber_id == subscriber_id:
                 return subscriber
         return None
+    def update_subscriber_info(self, subscriber):
+        editing_subscriber = self.get_subscriber_by_id(subscriber.subscriber_id)
+        if editing_subscriber is not None:
+            editing_subscriber.name = subscriber.name
+            editing_subscriber.address = subscriber.address
+        else:
+            raise ValueError(f"A subscriber with ID {subscriber.subscriber_id} does not exist")
+    def delete_subscriber(self, subscriber):
+        self.subscribers.remove(subscriber)

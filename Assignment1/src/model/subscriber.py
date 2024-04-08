@@ -6,10 +6,14 @@ class Subscriber(object):
         self.list_of_newspapers = []
     def get_info(self):
         return self.subscriber_id, self.name, self.address, self.list_of_newspapers
-    def add_newspaper(self, newspaper):
-        self.list_of_newspapers.append(newspaper)
+    def subscribe_to(self, newspaper_id):
+        try:
+            newspaper_id = int(newspaper_id)
+        except:
+            raise ValueError("Newspaper ID must be an integer")
+        self.list_of_newspapers.append(newspaper_id)
     def update_info(self, name, address):
         self.name = name
         self.address = address
     def delete(self, subscriber):
-        self.subscribers.remove(subscriber)
+        self.subscriber.remove(subscriber)

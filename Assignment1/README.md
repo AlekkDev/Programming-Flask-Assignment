@@ -84,12 +84,12 @@ A few examples are provided in the [`src`](./src) and [`test`](./test) folders t
 | **X** | `/editor/`                   | `POST`      | Update an editor's information.                                                                                                                         |
 | **X** | `/editor/`                   | `DELETE`    | Delete an editor.                                                                                                                                       |
 | **X** | `/editor//issues`            | `GET`       | Return a list of newspaper issues that the editor was responsible for.                                                                                  |
-|       | `/subscriber`                | `GET`       | List all subscribers in the agency.                                                                                                                     |
-|       | `/subscriber`                | `POST`      | Create a new subscriber.                                                                                                                                |
-|       | `/subscriber/`               | `GET`       | Get a subscriber's information.                                                                                                                         |
-|       | `/subscriber/`               | `POST`      | Update a subscriber's information.                                                                                                                      |
-|       | `/subscriber/`               | `DELETE`    | Delete a subscriber.                                                                                                                                    |
-|       | `/subscriber//subscribe`     | `POST`      | Subscribe a subscriber to a newspaper. (Transmit the newspaper ID as parameter.)                                                                        |
+| **X** | `/subscriber`                | `GET`       | List all subscribers in the agency.                                                                                                                     |
+| **X** | `/subscriber`                | `POST`      | Create a new subscriber.                                                                                                                                |
+| **X** | `/subscriber/`               | `GET`       | Get a subscriber's information.                                                                                                                         |
+| **X** | `/subscriber/`               | `POST`      | Update a subscriber's information.                                                                                                                      |
+| **X** | `/subscriber/`               | `DELETE`    | Delete a subscriber.                                                                                                                                    |
+| **X** | `/subscriber//subscribe`     | `POST`      | Subscribe a subscriber to a newspaper. (Transmit the newspaper ID as parameter.)                                                                        |
 |       | `/subscriber//stats`         | `GET`       | Get the number of newspaper subscriptions and the monthly and annual cost, as well as the number of issues that the subscriber received for each paper. |
 |       | `/subscriber//missingissues` | `GET`       | Check if there are any undelivered issues of the subscribed newspapers.                                                                                 |
 
