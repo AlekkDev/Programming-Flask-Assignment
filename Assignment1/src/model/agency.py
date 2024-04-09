@@ -94,3 +94,8 @@ class Agency(object):
             raise ValueError(f"A subscriber with ID {subscriber.subscriber_id} does not exist")
     def delete_subscriber(self, subscriber):
         self.subscribers.remove(subscriber)
+    def deliver_issue_to_subscribers(self, newspaper_id, issue_id):
+        for subscriber in self.subscribers:
+            if newspaper_id in subscriber.list_of_newspapers.paper_id:
+
+                subscriber.messages.append(f"New issue of {newspaper_id} is available")

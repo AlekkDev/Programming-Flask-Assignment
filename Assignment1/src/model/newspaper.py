@@ -17,7 +17,10 @@ class Newspaper(object):
         for issue in self.issues:
             if issue.issue_id == issue_id:
                 return issue
-        return None
+            else:
+                return None
+            
+
     def get_issues(self):
         return self.issues
     def add_issue(self, issue: Issue):

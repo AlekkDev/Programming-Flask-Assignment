@@ -4,6 +4,7 @@ class Subscriber(object):
         self.name = name
         self.address = address
         self.list_of_newspapers = []
+        self.messages = []
     def get_info(self):
         return self.subscriber_id, self.name, self.address, self.list_of_newspapers
     def subscribe_to(self, newspaper_id):
@@ -15,5 +16,3 @@ class Subscriber(object):
     def update_info(self, name, address):
         self.name = name
         self.address = address
-    def delete(self, subscriber):
-        self.subscriber.remove(subscriber)
