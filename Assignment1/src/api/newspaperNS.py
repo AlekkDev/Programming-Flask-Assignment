@@ -32,16 +32,7 @@ issue_model = newspaper_ns.model('IssueModel', {
     'delivered': fields.Boolean(required=False,
                                 help='A boolean indicating if the issue was delivered or not')
    })
-editor_model = newspaper_ns.model('EditorModel', {
-    'editor_id': fields.Integer(required=False,
-            help='The unique identifier of an editor'),
-    'name': fields.String(required=True,
-            help='The name of the editor, e.g. John Doe'),
-    'address': fields.String(required=True,
-            help='The address of the editor, e.g. 123 Main St'),
-    'list_of_newspapers': fields.List(fields.Integer, required=False,
-            help='A list of newspaper IDs that the editor is responsible for')
-   })
+
 subscriber_model = newspaper_ns.model('SubscriberModel', {
     'subscriber_id': fields.Integer(required=False,
             help='The unique identifier of a subscriber'),
@@ -128,4 +119,5 @@ class NewspaperIssueAPI(Resource):
         paper = Agency.get_instance().get_newspaper(paper_id)
         paper.add_issue(newspaper_ns.payload)
         return newspaper_ns.payload
+
 

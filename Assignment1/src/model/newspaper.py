@@ -18,8 +18,7 @@ class Newspaper(object):
             if issue.issue_id == issue_id:
                 return issue
             else:
-                return None
-            
+                return ValueError(f"An issue with ID {issue_id} does not exist")
 
     def get_issues(self):
         return self.issues

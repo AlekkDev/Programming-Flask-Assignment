@@ -10,9 +10,9 @@ class Subscriber(object):
     def subscribe_to(self, newspaper_id):
         try:
             newspaper_id = int(newspaper_id)
+            self.list_of_newspapers.append(newspaper_id)
         except:
             raise ValueError("Newspaper ID must be an integer")
-        self.list_of_newspapers.append(newspaper_id)
     def update_info(self, name, address):
         self.name = name
         self.address = address

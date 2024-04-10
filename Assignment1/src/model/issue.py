@@ -17,3 +17,7 @@ class Issue(object):
         return self.issue_id, self.title, self.publication_date, self.editor_id, self.delivered
     def deliver_issue(self):
         self.delivered = True
+    def deliver_issue_to_subscribers(self, newspaper_id, issue_id):
+        for subscriber in self.subscribers:
+            if newspaper_id in subscriber.list_of_newspapers:
+                subscriber.messages.append(issue_id)

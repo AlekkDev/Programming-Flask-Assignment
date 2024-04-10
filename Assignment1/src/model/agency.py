@@ -59,14 +59,14 @@ class Agency(object):
         for editor in self.editors:
             if editor.editor_id == editor_id:
                 return editor
-        return None
+        raise ValueError(f"An editor with ID {editor_id} does not exist")
+
     def delete_editor(self, editor):
         self.editors.remove(editor)
     def update_editor(self, editor):
         editing_editor = self.get_editor_by_id(editor.editor_id)
         if editing_editor is not None:
-            editing_editor.name = editor.name
-            editing_editor.address = editor.address
+            editing_editor.update_info(editor.name, editor.address)
         else:
             raise ValueError(f"An editor with ID {editor.editor_id} does not exist")
     def get_newspapers_of_editor(self, editor_id):
@@ -96,6 +96,15 @@ class Agency(object):
         self.subscribers.remove(subscriber)
     def deliver_issue_to_subscribers(self, newspaper_id, issue_id):
         for subscriber in self.subscribers:
-            if newspaper_id in subscriber.list_of_newspapers.paper_id:
+            if newspaper_id in subscriber.list_of_newspapers:
 
                 subscriber.messages.append(f"New issue of {newspaper_id} is available")
+    def release_issue(self, newspaper_id, issue_id):
+        newspaper = self.get_newspaper(newspaper_id)
+        issue = newspaper.get_issue_by_id(issue_id)
+        issue.release_issue()
+    def check_newspaper_statistics(self, newspaper_id):
+        newspaper = self.get_newspaper(newspaper_id)
+        price = newspaper.price
+        frequency = newspaper.frequency
+        annual_price = price*frequency * 12

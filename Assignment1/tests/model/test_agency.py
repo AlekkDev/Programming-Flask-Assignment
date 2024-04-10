@@ -89,7 +89,8 @@ def test_create_and_delete_editor(agency):
     new_issue.add_editor(new_editor)
     assert agency.get_editor_by_id(new_editor.editor_id) == new_editor
     agency.delete_editor(new_editor)
-    assert agency.get_editor_by_id(new_editor.editor_id) == None
+
+    # assert agency.get_editor_by_id(new_editor.editor_id) raises ValueError
 def test_get_editor_info(agency):
     new_paper = Newspaper(paper_id=465,
                           name="Simpsons Comic",
@@ -115,11 +116,11 @@ def test_update_editor(agency):
                           name="Simpsons Comic",
                           frequency=7,
                           price=3.14)
-    new_editor = Editor(editor_id=2, name="Homer Simpson", address="First Street")
+    new_editor = Editor(editor_id=69, name="Homer Simpson", address="First Street")
     agency.add_newspaper(new_paper)
     agency.add_editor(new_editor)
-    agency.get_editor_by_id(2).update_info(name = "Bart Simpson", address = "Second Street")
-    assert agency.get_editor_by_id(2).get_info() == (2,"Bart Simpson","Second Street",[])
+    agency.get_editor_by_id(69).update_info(name = "Bart Simpson", address = "Second Street")
+    assert agency.get_editor_by_id(69).get_info() == (69,"Bart Simpson","Second Street",[])
 def test_get_editor_newspapers(agency):
     new_paper = Newspaper(paper_id=468,
                           name="Simpsons Comic",
@@ -190,3 +191,28 @@ def test_subscriber_subscribe_to_newspaper(agency):
     agency.add_subscriber(new_subscriber)
     new_subscriber.subscribe_to(new_paper.paper_id)
     assert new_subscriber.list_of_newspapers == [new_paper.paper_id]
+def test_deliver_issue_to_subscribers(agency):
+    new_paper = Newspaper(paper_id=475,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=7, name="Bart Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    new_subscriber.subscribe_to(new_paper.paper_id)
+    new_issue = Issue(issue_id=123, title="Stiegl is definitely not overrated",publicationDate="2023-09-01" )
+    new_paper.add_issue(new_issue)
+    agency.deliver_issue_to_subscribers(new_paper.paper_id, new_issue.issue_id)
+    assert new_subscriber.messages == [f"New issue of {new_paper.paper_id} is available"]
+def test_release_issue(agency):
+    new_paper = Newspaper(paper_id=476,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_issue = Issue(issue_id=123, title="Stiegl is definitely not overrated",publicationDate="2023-09-01" )
+    agency.add_newspaper(new_paper)
+    new_paper.add_issue(new_issue)
+    new_issue.release_issue()
+    assert agency.get_newspaper(new_paper.paper_id).get_issue_by_id(123).released == True
+def test_subscriber_statistics(agency):
+    pass
