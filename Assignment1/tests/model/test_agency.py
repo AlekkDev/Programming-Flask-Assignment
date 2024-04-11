@@ -14,15 +14,12 @@ def test_add_newspaper(agency):
                           frequency=7,
                           price=3.14)
     agency.add_newspaper(new_paper)
+    assert new_paper in agency.newspapers
     assert len(agency.all_newspapers()) == before + 1
+    assert new_paper.paper_id == 999
 
 
 def test_add_newspaper_same_id_should_raise_error(agency):
-    before = len(agency.newspapers)
-    new_paper = Newspaper(paper_id=999,
-                          name="Simpsons Comic",
-                          frequency=7,
-                          price=3.14)
 
     # first adding of newspaper should be okay
     # agency.add_newspaper(new_paper)
@@ -215,4 +212,40 @@ def test_release_issue(agency):
     new_issue.release_issue()
     assert agency.get_newspaper(new_paper.paper_id).get_issue_by_id(123).released == True
 def test_subscriber_statistics(agency):
-    pass
+    new_paper = Newspaper(paper_id=497,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=7, name="Alek Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    new_subscriber.subscribe_to(new_paper.paper_id)
+    new_issue = Issue(issue_id=123, title="Bart Leaves Home",publicationDate="2023-09-01" )
+    new_issue2 = Issue(issue_id=128, title="Bart Comes Home",publicationDate="2023-10-01" )
+    new_paper.add_issue(new_issue)
+    agency.deliver_issue_to_subscribers(new_paper.paper_id, new_issue.issue_id)
+    new_paper.add_issue(new_issue2)
+    agency.deliver_issue_to_subscribers(new_paper.paper_id, new_issue2.issue_id)
+    stats = agency.get_subscriber_statistics(new_subscriber.subscriber_id)
+    message_to_check = {"Monthly cost":new_paper.price*4, "Annual cost":new_paper.price*52, "Number of newspaper subscriptions":1}
+    assert stats[0] == message_to_check
+
+    assert new_paper.paper_id in stats[1].keys() and stats[1][new_paper.paper_id] == 2
+
+def test_check_for_undelivered_issues(agency):
+    new_paper = Newspaper(paper_id=569,
+                          name="Simpsons Comic",
+                          frequency=7,
+                          price=3.14)
+    new_subscriber = Subscriber(subscriber_id=66, name="Alek Simpson", address="First Street")
+    agency.add_newspaper(new_paper)
+    agency.add_subscriber(new_subscriber)
+    new_subscriber.subscribe_to(new_paper.paper_id)
+    new_issue = Issue(issue_id=123, title="Bart Leaves Home",publicationDate="2023-09-01" )
+    new_issue2 = Issue(issue_id=128, title="Bart Comes Home",publicationDate="2023-10-01" )
+    new_paper.add_issue(new_issue)
+    agency.deliver_issue_to_subscribers(new_paper.paper_id, new_issue.issue_id)
+    new_paper.add_issue(new_issue2)
+    assert agency.check_for_undelivered_issues(new_subscriber.subscriber_id) == True
+    agency.deliver_issue_to_subscribers(new_paper.paper_id, new_issue2.issue_id)
+    assert agency.check_for_undelivered_issues(new_subscriber.subscriber_id) == False

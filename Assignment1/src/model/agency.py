@@ -4,7 +4,7 @@ from .newspaper import Newspaper
 from .issue import Issue
 from .editor import Editor
 from .subscriber import Subscriber
-
+import math
 class Agency(object):
     singleton_instance = None
 
@@ -96,15 +96,35 @@ class Agency(object):
         self.subscribers.remove(subscriber)
     def deliver_issue_to_subscribers(self, newspaper_id, issue_id):
         for subscriber in self.subscribers:
-            if newspaper_id in subscriber.list_of_newspapers:
-
-                subscriber.messages.append(f"New issue of {newspaper_id} is available")
+            subscriber.receive_issue(newspaper_id, issue_id)
     def release_issue(self, newspaper_id, issue_id):
         newspaper = self.get_newspaper(newspaper_id)
         issue = newspaper.get_issue_by_id(issue_id)
         issue.release_issue()
-    def check_newspaper_statistics(self, newspaper_id):
-        newspaper = self.get_newspaper(newspaper_id)
-        price = newspaper.price
-        frequency = newspaper.frequency
-        annual_price = price*frequency * 12
+
+    def get_subscriber_statistics(self,subscriber_id):
+        # price_stats_dictionary = {}
+        total_monthly_price = 0
+        total_annual_price = 0
+        #GET SUBSCRIBER BY ID
+        subscriber = self.get_subscriber_by_id(subscriber_id)
+        subscriber_newspapers = subscriber.list_of_newspapers
+        #FOR LOOP -> GETS NEWSPAPER PRICE AND FREQUENCY FOR EACH NEWSPAPER
+        for newpaper in subscriber_newspapers:
+            newspaper = self.get_newspaper(newpaper)
+            monthly_price, annual_price = newspaper.get_price_info()
+            total_monthly_price += monthly_price
+            total_annual_price += annual_price
+        num_of_newspapers = len(subscriber_newspapers)
+
+        issues_received = subscriber.issues_received_by_newspaper
+
+        return ({"Monthly cost":total_monthly_price, "Annual cost":total_annual_price, "Number of newspaper subscriptions":num_of_newspapers}, issues_received)
+    def check_for_undelivered_issues(self,subscriber_id):
+        subscriber = self.get_subscriber_by_id(subscriber_id)
+        for newspaper_id in subscriber.list_of_newspapers:
+            newspaper = self.get_newspaper(newspaper_id)
+            # print(len(newspaper.issues), len(subscriber.issues_ids_received))
+            if len(newspaper.issues) != len(subscriber.issues_ids_received):
+                return True
+            return False

@@ -90,8 +90,8 @@ A few examples are provided in the [`src`](./src) and [`test`](./test) folders t
 | **X** | `/subscriber/`               | `POST`      | Update a subscriber's information.                                                                                                                      |
 | **X** | `/subscriber/`               | `DELETE`    | Delete a subscriber.                                                                                                                                    |
 | **X** | `/subscriber//subscribe`     | `POST`      | Subscribe a subscriber to a newspaper. (Transmit the newspaper ID as parameter.)                                                                        |
-|       | `/subscriber//stats`         | `GET`       | Get the number of newspaper subscriptions and the monthly and annual cost, as well as the number of issues that the subscriber received for each paper. |
-|       | `/subscriber//missingissues` | `GET`       | Check if there are any undelivered issues of the subscribed newspapers.                                                                                 |
+| **X** | `/subscriber//stats`         | `GET`       | Get the number of newspaper subscriptions and the monthly and annual cost, as well as the number of issues that the subscriber received for each paper. |
+| **X** | `/subscriber//missingissues` | `GET`       | Check if there are any undelivered issues of the subscribed newspapers.                                                                                 |
 
 
 ### Submission

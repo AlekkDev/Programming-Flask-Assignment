@@ -1,5 +1,5 @@
 from typing import List
-
+import math
 from flask_restx import Model
 
 from .issue import Issue
@@ -19,7 +19,14 @@ class Newspaper(object):
                 return issue
             else:
                 return ValueError(f"An issue with ID {issue_id} does not exist")
-
+    def get_price_info(self):
+        price = self.price
+        monthly_freq = math.floor(30/self.frequency)
+        monthly_price = price * monthly_freq
+        annual_freq = math.floor(365/self.frequency)
+        annual_price = price * annual_freq
+        print(monthly_freq, annual_freq)
+        return monthly_price, annual_price
     def get_issues(self):
         return self.issues
     def add_issue(self, issue: Issue):
@@ -27,3 +34,5 @@ class Newspaper(object):
     def get_editor_of_issue(self, issue_id: int):
         issue = self.get_issue_by_id(issue_id)
         return issue.editor_id
+    def delete_issues(self):
+        self.issues = []
