@@ -4,7 +4,7 @@ from .newspaper import Newspaper
 from .issue import Issue
 from .editor import Editor
 from .subscriber import Subscriber
-import math
+import random
 class Agency(object):
     singleton_instance = None
 
@@ -13,6 +13,15 @@ class Agency(object):
         self.editors: List[Editor] = []
         self.subscribers: List[Subscriber] = []
 
+    def generate_product_id():
+        # Define the range for the product ID (adjust min and max values as needed)
+        min_id = 1000
+        max_id = 9999
+
+        # Generate a random integer within the specified range
+        product_id = random.randint(min_id, max_id)
+
+        return product_id
     @staticmethod
     def get_instance():
         if Agency.singleton_instance is None:
@@ -40,11 +49,14 @@ class Agency(object):
         self.newspapers.remove(paper)
 
     def update_newspaper(self, paper: Newspaper):
+        print("update newspaper called")
         old_paper = self.get_newspaper(paper.paper_id)
         if old_paper is not None:
             old_paper.name = paper.name
             old_paper.frequency = paper.frequency
             old_paper.price = paper.price
+            print(old_paper.paper_id, old_paper.name, old_paper.frequency, old_paper.price)
+            return old_paper
         else:
             raise ValueError(f"A newspaper with ID {paper.paper_id} does not exist")
         def get_issues(self):

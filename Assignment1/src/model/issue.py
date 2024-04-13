@@ -1,7 +1,7 @@
 import datetime
 class Issue(object):
 
-    def __init__(self,issue_id, title, editor_id = None,publicationDate = datetime.datetime.now().date(), delivered: bool = False):
+    def __init__(self,issue_id, title, editor_id = None, publicationDate = datetime.datetime.now().date(), delivered: bool = False):
         self.issue_id = issue_id
         self.title = title
         self.editor_id = editor_id
@@ -14,7 +14,8 @@ class Issue(object):
     def release_issue(self):
         self.released = True
     def get_info_of_issue(self):
-        return self.issue_id, self.title, self.publication_date, self.editor_id, self.delivered
+        return self.issue_id, self.title,self.editor_id, self.publication_date,  self.delivered, self.released
+        # print(self.issue_id, self.title, self.publication_date, self.editor_id, self.delivered, self.released)
     def deliver_issue(self):
         self.delivered = True
     def deliver_issue_to_subscribers(self, newspaper_id, issue_id):

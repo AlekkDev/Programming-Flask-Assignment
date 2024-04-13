@@ -30,7 +30,7 @@ class Subscriber(object):
             value = self.issues_received_by_newspaper[newspaper_id]
             self.issues_received_by_newspaper[newspaper_id] = value + 1
             return self.issues_received_by_newspaper
-    def clear_newspaper_history(self, newspaper_id):
+    def clear_newspaper_history(self):
         self.issues_received_by_newspaper = {}
         self.messages = []
         self.issues_ids_received = []
