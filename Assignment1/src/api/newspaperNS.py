@@ -3,8 +3,7 @@ from flask_restx import Namespace, reqparse, Resource, fields
 
 from ..model.agency import Agency
 from ..model.newspaper import Newspaper
-from ..model.issue import Issue
-from ..model.editor import Editor
+
 
 import random
 
@@ -33,14 +32,7 @@ issue_model = newspaper_ns.model('IssueModel', {
                                 help='A boolean indicating if the issue was delivered or not')
    })
 
-subscriber_model = newspaper_ns.model('SubscriberModel', {
-    'subscriber_id': fields.Integer(required=False,
-            help='The unique identifier of a subscriber'),
-    'name': fields.String(required=True,
-            help='The name of the subscriber, e.g. Bart Simpson'),
-    'address': fields.String(required=True,
-            help='The address of the subscriber, e.g. First Street'),
-})
+
 
 @newspaper_ns.route('/')
 class NewspaperAPI(Resource):
@@ -123,6 +115,22 @@ class NewspaperIssueRelease(Resource):
         paper = Agency.get_instance().get_newspaper(paper_id)
         issue = paper.get_issue_by_id(issue_id)
         issue.release_issue()
+        return jsonify(issue.get_info_of_issue())
+@newspaper_ns.route('/<int:paper_id>/issue/<int:issue_id>/editor/')
+class NewspaperIssueEditor(Resource):
+    @newspaper_ns.doc(description="Assign an editor to a specific issue of a newspaper")
+    def post(self, paper_id, issue_id):
+        paper = Agency.get_instance().get_newspaper(paper_id)
+        issue = paper.get_issue_by_id(issue_id)
+        issue.add_editor(newspaper_ns.payload['editor_id'])
+        return jsonify(issue.get_info_of_issue())
+@newspaper_ns.route('/<int:paper_id>/issue/<int:issue_id>/deliver/')
+class NewspaperIssueDeliver(Resource):
+    @newspaper_ns.doc(description="Deliver a specific issue of a newspaper")
+    def post(self, paper_id, issue_id):
+        paper = Agency.get_instance().get_newspaper(paper_id)
+        issue = paper.get_issue_by_id(issue_id)
+        issue.deliver_issue()
         return jsonify(issue.get_info_of_issue())
 
 

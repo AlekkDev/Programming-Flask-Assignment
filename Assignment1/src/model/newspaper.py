@@ -44,7 +44,10 @@ class Newspaper(object):
             raise ValueError("Unsupported type for issue")
 
         self.issues.append(new_issue)
-
+    def get_other_editor(self, editor_id):
+        for issue in self.issues:
+            if issue.editor_id != editor_id:
+                return issue.editor_id
         # print(issue)
     def get_editor_of_issue(self, issue_id: int):
         issue = self.get_issue_by_id(issue_id)

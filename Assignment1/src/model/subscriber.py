@@ -1,5 +1,5 @@
 class Subscriber(object):
-    def __init__(self, subscriber_id,name,address):
+    def __init__(self, subscriber_id, name, address):
         self.subscriber_id = subscriber_id
         self.name = name
         self.address = address
@@ -9,6 +9,7 @@ class Subscriber(object):
         self.issues_received_by_newspaper = {}
     def get_info(self):
         return self.subscriber_id, self.name, self.address, self.list_of_newspapers
+
     def subscribe_to(self, newspaper_id):
         try:
             newspaper_id = int(newspaper_id)
@@ -31,8 +32,7 @@ class Subscriber(object):
             self.issues_received_by_newspaper[newspaper_id] = value + 1
             return self.issues_received_by_newspaper
     def clear_newspaper_history(self):
+        self.list_of_newspapers = []
         self.issues_received_by_newspaper = {}
         self.messages = []
         self.issues_ids_received = []
-
-

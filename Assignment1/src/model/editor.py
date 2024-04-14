@@ -8,9 +8,10 @@ class Editor(object):
         return self.editor_id, self.name, self.address, self.list_of_newspapers
     def add_newspaper(self, newspaper):
         self.list_of_newspapers.append(newspaper)
+    def remove_newspaper(self, newspaper):
+        self.list_of_newspapers.remove(newspaper)
     def update_info(self, name, address):
         self.name = name
         self.address = address
     def get_newspapers(self):
         return self.list_of_newspapers
-

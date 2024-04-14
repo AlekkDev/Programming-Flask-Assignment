@@ -5,9 +5,9 @@ from .issue import Issue
 from .editor import Editor
 from .subscriber import Subscriber
 import random
+
 class Agency(object):
     singleton_instance = None
-
     def __init__(self):
         self.newspapers: List[Newspaper] = []
         self.editors: List[Editor] = []
@@ -15,6 +15,7 @@ class Agency(object):
 
     def generate_product_id():
         # Define the range for the product ID (adjust min and max values as needed)
+        # Could be done using UUID, but for simplicity, Im using a random integer from the random module
         min_id = 1000
         max_id = 9999
 
@@ -74,6 +75,13 @@ class Agency(object):
         raise ValueError(f"An editor with ID {editor_id} does not exist")
 
     def delete_editor(self, editor):
+        # FIX to satisfy "When an editor is removed (e.g., quits the job), transfer all issues in his/her supervision to another editor of the same newspaper."
+        for newspaper in self.newspapers:
+            for issue in newspaper.issues:
+                if issue.editor_id == editor.editor_id:
+                    other_editor =  newspaper.get_other_editor(editor.editor_id)
+                    issue.editor_id = other_editor
+        # editor.
         self.editors.remove(editor)
     def update_editor(self, editor):
         editing_editor = self.get_editor_by_id(editor.editor_id)
@@ -105,7 +113,10 @@ class Agency(object):
         else:
             raise ValueError(f"A subscriber with ID {subscriber.subscriber_id} does not exist")
     def delete_subscriber(self, subscriber):
+        subscriber.clear_newspaper_history()
         self.subscribers.remove(subscriber)
+
+
     def deliver_issue_to_subscribers(self, newspaper_id, issue_id):
         for subscriber in self.subscribers:
             subscriber.receive_issue(newspaper_id, issue_id)

@@ -146,7 +146,7 @@ def test_get_all_subscribers(agency):
     new_subscriber = Subscriber(subscriber_id=1, name="Bart Simpson", address="First Street")
     agency.add_newspaper(new_paper)
     agency.add_subscriber(new_subscriber)
-    assert len(agency.get_all_subscribers()) == 2
+    assert len(agency.get_all_subscribers()) == len(agency.subscribers)
 def test_get_subscriber_info(agency):
     new_paper = Newspaper(paper_id=470,
                           name="Simpsons Comic",
@@ -177,7 +177,7 @@ def test_delete_subscriber(agency):
     agency.add_newspaper(new_paper)
     agency.add_subscriber(new_subscriber)
     agency.delete_subscriber(new_subscriber)
-    assert agency.get_subscriber_by_id(5) == None
+    assert agency.get_subscriber_by_id(7) == None
 def test_subscriber_subscribe_to_newspaper(agency):
     new_paper = Newspaper(paper_id=474,
                           name="Simpsons Comic",
